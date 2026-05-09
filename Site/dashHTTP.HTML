@@ -4,654 +4,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-    <title>Dashboard | noBroke</title>
-    <link rel="stylesheet" href="dash.css">
+    <link rel="stylesheet" href="dashIsa.css">
+    <title>NOBROKE | Monitoramento HTTP</title>
 </head>
 
 <body>
-
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <div class="header-http">
-        <div class="header-esquerda">
-            <h3>Trafego HTTP</h3>
-            <p>api-gateway → backend services</p>
+    <!-- Header-->
+    <div class="header">
+        <div class="icon-header">
+            <img src="imagens/batimento-cardiaco.png" alt="">
         </div>
-        <div class="header-direita">
-            <p class="card-http">Últimas 24h</p>
-            <p class="card-http1">Operacional</p>
+        <div class="header-titulo">
+            <h3>Monitoramento HTTP — Home Broker</h3>
+            <span>Análise de requisições HTTP e impacto de incidentes de infraestrutura nas operações
+                financeiras.</span>
+        </div>
+    </div>
+    <hr style="width: 100%; color: #18191b; height: 1px;">
+
+    <!-- Filtros -->
+    <div class="filtros">
+        <div class="filtros-botoes">
+                <button>15min</button>
+                <button>1h</button>
+                <button>6h</button>
+                <button>24hrs</button>
+        </div>
+        <div class="filtros-servidores">
+            <img src="imagens/servidor.png" alt="">
+            <span>servidor: </span>
+            <select name="select_servidores" id="">
+                <option value="1">Todos</option>
+                <option value="2">hb-prod-1</option>
+                <option value="3">hb-prod-2</option>
+                <option value="4">hb-prod-3</option>
+                <option value="5">hb-prod-4</option>
+            </select>
         </div>
     </div>
 
-
-    <div class="body-dash-kpi">
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>RPS</p>
-                <h2>487</h2>
-                <p>pico 612/s</p>
+    <!-- KPI -->
+    <div class="body-kpi">
+        <!-- kpi 1 -->
+        <div class="kpi">
+            <div class="conteudo-kpi-esquerda">
+                <p>Volume de requisições</p>
+                <span style="font-size: xx-large;">26.7M</span>
+                <span>janela atual</span>
+                <div class="legenda-kpi">
+                    <span>+12% última hora</span>
+                </div>
             </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/velocimetro.png" alt="">
-            </div>
-        </div>
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Requisições</p>
-                <h2>48.2K</h2>
-                <p style="color: green;">+12.4% vs ontem</p>
-            </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/batimento-cardiaco.png" alt="">
+            <div class="imagem-kpi-direita">
+                <img src="imagens/elevacao.png" alt="">
             </div>
         </div>
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Taxa de sucesso</p>
-                <h2>99.2%</h2>
-                <p style="color: green;">+0.3%</p>
+        <!-- kpi 2 -->
+        <div class="kpi">
+            <div class="conteudo-kpi-esquerda">
+                <p>Latência p95 ordens</p>
+                <span style="font-size: xx-large;">62ms</span>
+                <span>95% abaixo desse tempo</span>
+                <div class="legenda-kpi">
+                    <span>+18ms vs baseline</span>
+                </div>
             </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/lista-de-controle.png" alt="">
-            </div>
-        </div>
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Latência p95</p>
-                <h2>186ms</h2>
-                <p style="color: green;">-24ms</p>
-            </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/latencia.png" alt="">
+            <div class="imagem-kpi-direita">
+                <img src="imagens/instantaneo.png" alt="">
             </div>
         </div>
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Erros 5xx</p>
-                <h2>312</h2>
-                <p style="color: red;">+48 nas últimas 2h</p>
+        <!-- kpi 3 -->
+        <div class="kpi">
+            <div class="conteudo-kpi-esquerda">
+                <p>Ordens com sucesso</p>
+                <span style="font-size: xx-large;">92.1%</span>
+                <span>184.320 executadas</span>
+                <div class="legenda-kpi">
+                    <span>-0.6 p.p.</span>
+                </div>
             </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/aviso.png" alt="">
-            </div>
-        </div>
-    </div>
-
-
-    <div class="body-dash-kpi">
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Ordens / segundo</p>
-                <h2>214</h2>
-                <p>pico 318/s</p>
-            </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/vista-lateral-vazia-do-carrinho-de-compras.png" alt="">
+            <div class="imagem-kpi-direita">
+                <img src="imagens/marca-de-verificacao.png" alt="">
             </div>
         </div>
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Taxa de falha</p>
-                <h2>2.4%</h2>
-                <p style="color: green;">-0.6% vs ontem</p>
+        <!-- kpi 4 -->
+        <div class="kpi">
+            <div class="conteudo-kpi-esquerda">
+                <p>Respostas HTTP 5xx</p>
+                <span style="font-size: xx-large;">4.831</span>
+                <span>erros internos no período</span>
+                <div class="legenda-kpi">
+                    <span>+34% vs hora anterior</span>
+                </div>
             </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/perigo.png" alt="">
-            </div>
-        </div>
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Exec. p95</p>
-                <h2>62ms</h2>
-                <p style="color: green;">-8ms</p>
-            </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/cronometro.png" alt="">
-            </div>
-        </div>
-        <div class="kpi-dash">
-            <div class="kpi-dash-esquerda">
-                <p>Ordens rejeitadas</p>
-                <h2>372</h2>
-                <p style="color: red;">+24 nas últimas 2h</p>
-            </div>
-            <div class="kpi-dash-direita">
-                <img src="./imagens/cancelar (1).png" alt="">
+            <div class="imagem-kpi-direita">
+                <img src="imagens/simbolo-de-alerta.png" alt="">
             </div>
         </div>
     </div>
 
-
-    <div class="body-dash-grafico1">
-        <div class="box-grafico1-esquerda">
-            <div class="header-box-grafico1">
-                <div class="header-box-grafico1-esquerda">
-                    <p>Volume de requisições</p>
-                    <p>RPS — últimos 60 segundos</p>
-                </div>
-                <div class="header-box-grafico1-direita">
-                    <p>Atual</p>
-                    <p>Média</p>
-                    <p>Pico</p>
-                </div>
-            </div>
-            <div class="grafico-container">
-                <canvas id="GraficoVolumeRequisicoes"></canvas>
-            </div>
+    <!-- GRAFICOS -->
+    <div class="body-graficos">
+        <!-- bloco 1 de graficos-->
+        <div class="grafico-esquerda">
+            <h3>Volume de requisições HTTP</h3>
+            <p>Picos correlacionados com janelas de stress de hardware</p>
+            <canvas id="graficoVolume"></canvas>
         </div>
-        <div class="box-grafico1-direita">
-            <p>Status codes</p>
-            <p>Distribuição de respostas HTTP</p>
-            <div class="linha-http">
-                <div class="linha-preenchida01"
-                    style="border-top-left-radius: 4px; border-bottom-left-radius: 4px; width: 95.1%; height: 10px; background-color: green;">
-                </div>
-                <div class="linha-preenchida01"
-                    style="border-top-right-radius: 4px; border-bottom-right-radius: 4px; width: 2.6%; height: 10px; background-color: orange;">
-                </div>
-                <div class="linha-preenchida01"
-                    style="border-top-right-radius: 4px; border-bottom-right-radius: 4px; width: 1.7%; height: 10px; background-color: yellow;">
-                </div>
-                <div class="linha-preenchida01"
-                    style="border-top-right-radius: 4px; border-bottom-right-radius: 4px; width: 0.6%; height: 10px; background-color: red;">
-                </div>
-            </div>
-            <div class="status-lista">
-
-                <div class="status-item">
-                    <span>2xx Sucesso</span>
-                    <span>45,820</span>
-                    <span>95.1%</span>
-                </div>
-
-                <div class="status-item">
-                    <span>3xx Redirect</span>
-                    <span>1,240</span>
-                    <span>2.6%</span>
-                </div>
-
-                <div class="status-item">
-                    <span>4xx Cliente</span>
-                    <span>820</span>
-                    <span>1.7%</span>
-                </div>
-
-                <div class="status-item">
-                    <span>5xx Servidor</span>
-                    <span>312</span>
-                    <span>0.6%</span>
-                </div>
-
-            </div>
+        <div class="grafico-direita">
+            <h3>Latência p95 — ordens</h3>
+            <p>Aumento sustentado indica degradação</p>
+            <canvas id="graficoLatencia"></canvas>
         </div>
     </div>
 
-
-    <div class="body-dash-grafico1">
-        <div class="box-grafico1-esquerda">
-            <div class="header-box-grafico1">
-                <div class="header-box-grafico1-esquerda">
-                    <p>Throughput</p>
-                    <p>Requisições por hora — últimas 24h</p>
-                </div>
-            </div>
-            <div class="grafico-container">
-                <canvas id="GraficoThroughput"></canvas>
-            </div>
+    <div class="body-graficos">
+        <!-- bloco 2 de graficos-->
+        <div class="grafico-esquerda2">
+            <h3>Status das ordens</h3>
+            <p>Negócio vs falha técnica</p>
+            <canvas id="graficoStatus"></canvas>
         </div>
-
-
-        <div class="box-grafico1-direita-latencia">
-            <div class="header-box-grafico1">
-                <div class="header-box-grafico1-esquerda">
-                    <p>Distribuição de latência</p>
-                    <p>Tempo de resposta agregado</p>
-                </div>
-            </div>
-            <div class="grafico-container">
-                <canvas id="graficoLatencia"></canvas>
-            </div>
+        <div class="grafico-direita2">
+            <h3>Distribuição de erros 5xx</h3>
+            <p>Por código</p>
+            <canvas id="graficoErrosBarras"></canvas>
         </div>
-    </div>
-    </div>
-
-    <div class="body-dash-grafico1">
-        <div class="box-grafico1-esquerda">
-        <div class="header-box-grafico1">
-            <div class="header-box-grafico1-esquerda">
-                <p>Ordens por segundo</p>
-                <p>OPS — últimos 60 segundos</p>
-            </div>
-            <div class="header-box-grafico1-direita">
-                <div>
-                    <p>Atual</p>
-                    <h3>167</h3>
-                </div>
-                <div>
-                    <p>Média</p>
-                    <h3>183</h3>
-                </div>
-                <div>
-                    <p>Pico</p>
-                    <h3 style="color: #ff7628;">261</h3>
-                </div>
-            </div>
-        </div>
-        <div class="grafico-container">
-            <canvas id="graficoOrdensSegundo"></canvas>
-        </div>
-        </div>
-        <div class="box-grafico1-direita-latencia">
-            <div class="header-box-grafico1">
-                <div class="header-box-grafico1-esquerda">
-                    <p>Tempo de execução de trade</p>
-                    <p>Ordem enviada → executada</p>
-                </div>
-            </div>
-            <div class="grafico-container">
-                <canvas id="graficoTrade"></canvas>
-            </div>
+        <div class="grafico-direita2">
+            <h3>Distribuição de erros 5xx</h3>
+            <p>série temporal</p>
+            <canvas id="graficoErrosLinha"></canvas>
         </div>
     </div>
 
-    <div class="body-dash-grafico1">
-        <div class="container-end-point">
-
-            <p>Top endpoints</p>
-            <p style="color: #9ca3af;">Volume e taxa de erro</p>
-
-            <div class="linha-http">
-                <span>/api/orders</span>
-                <div class="info-endpoint">
-                    <span>p95 142ms</span>
-                    <span class="sucesso">0.4% err</span>
-                    <span>12,480</span>
-                </div>
+    <!-- Legendas -->
+    <div class="body-graficos">
+        <div class="grafico-esquerda2">
+            <h3>Legenda & referências</h3>
+            <p>Cores, severidades, SLA e glossário usados neste painel</p>
+        <div class="legendas-body">
+            <div class="legenda">
+                <span>Status HTTP</span>
+                <span style="color: green;">2xx</span>
+                <p>Sucesso — requisição processada</p>
+                <span style="color: yellow;">3xx</span>
+                <p>Redirecionamento</p>
+                <span style="color: orange;">4xx</span>
+                <p>Erro do cliente (401, 404…)</p>
+                <span style="color: red;">5xx</span>
+                <p>Erro do servidor (500, 502, 503, 504)</p>
             </div>
-            <div class="linha-preenchida01"></div>
-
-            <div class="linha-http">
-                <span>/api/users/:id</span>
-                <div class="info-endpoint">
-                    <span>p95 58ms</span>
-                    <span class="sucesso">0.1% err</span>
-                    <span>9,821</span>
-                </div>
+            <div class="legenda">
+               <span>Severidade dos alertas</span>
+                <span style="color: red;">Critico</span>
+                <p>Impacto direto em ordens (5xx, timeout)</p>
+                <span style="color: yellow;">Atenção</span>
+                <p>Latência elevada ou degradação parcial</p>
+                <span style="color: green;">Saudavel</span>
+                <p>Dentro do SLA esperado</p>
             </div>
-            <div class="linha-preenchida01"></div>
-
-            <div class="linha-http">
-                <span>/api/inventory</span>
-                <div class="info-endpoint">
-                    <span>p95 96ms</span>
-                    <span class="sucesso">0.2% err</span>
-                    <span>7,314</span>
-                </div>
+            <div class="legenda">
+                <span>SLA</span>
+                <span style="color: yellow;">p95 > 800ms</span>
+                <p>Atenção</p>
+                <span style="color: red;">p95 > 1500ms</span>
+                <p>Crítico</p>
+                <span style="color: red;">Erro 5xx > 1%</span>
+                <p>Crítico</p>
+                <span style="color: yellow;">Sucesso ordens < 98%</span>
+                <p>Atenção</p>
             </div>
-            <div class="linha-preenchida01"></div>
-
-            <div class="linha-http">
-                <span>/api/payments/charge</span>
-                <div class="info-endpoint">
-                    <span>p95 1240ms</span>
-                    <span class="erro">4.8% err</span>
-                    <span>3,210</span>
-                </div>
+            <div class="legenda">
+                <span>Glossário</span>
+                <span>RPS— Requisições por segundo</span>
+                <span>p95— 95% das requisições abaixo deste tempo</span>
+                <span>5xx— Família de erros do servidor</span>
+                <span>SLA— Acordo de nível de serviço</span>
+                <span>MTTR— Tempo médio de recuperação</span>
             </div>
-            <div class="linha-preenchida01"></div>
-
-            <div class="linha-http">
-                <span>/api/notifications</span>
-                <div class="info-endpoint">
-                    <span>p95 78ms</span>
-                    <span class="erro">2.1% err</span>
-                    <span>2,890</span>
-                </div>
+            <div class="legenda">
+                <span>Erros 5xx — o que cada código significa</span>
+                <span>500 - Internal Server Error</span>
+                <p>Falha genérica não tratada na aplicação (exceção, bug, OOM).</p>
+                <span>501 - Not Implemented</span>
+                <p>O servidor não reconhece o método HTTP ou funcionalidade solicitada.</p>
+                <span>502 - Bad Gateway</span>
+                <p>Proxy/LB recebeu resposta inválida do upstream (app caiu ou reiniciou).</p>
+                <span>503 - Service Unavailable</span>
+                <p>Serviço sobrecarregado ou em manutenção — sem capacidade para responder.</p>
+                <span>504 -Gateway Timeout</span>
+                <p>Upstream demorou demais — geralmente CPU/IO saturados ou B3 lenta.</p>
+                <span>507 - Insufficient Storage</span>
+                <p>Disco cheio ou cota esgotada impedindo persistir a requisição.</p>
             </div>
-            <div class="linha-preenchida01"></div>
-
         </div>
-        <div class="box-grafico1-direita-metodos">
-
-            <p>Métodos HTTP</p>
-            <p>Volume por verbo</p>
-
-
-            <div class="metodo-item">
-                <div class="linha-http">
-                    <span>GET</span>
-                    <span>66.7%</span>
-                    <span>32,140</span>
-                </div>
-                <div class="barra">
-                    <div class="preenchido" style="width: 66.7%; background-color: orange;"></div>
-                </div>
-            </div>
-
-
-            <div class="metodo-item">
-                <div class="linha-http">
-                    <span>POST</span>
-                    <span>20.4%</span>
-                    <span>9,820</span>
-                </div>
-                <div class="barra">
-                    <div class="preenchido" style="width: 20.4%; background-color: #00E396;"></div>
-                </div>
-            </div>
-
-
-            <div class="metodo-item">
-                <div class="linha-http">
-                    <span>PUT</span>
-                    <span>4.8%</span>
-                    <span>2,310</span>
-                </div>
-                <div class="barra">
-                    <div class="preenchido" style="width: 4.8%; background-color: yellow;"></div>
-                </div>
-            </div>
-
-
-            <div class="metodo-item">
-                <div class="linha-http">
-                    <span>PATCH</span>
-                    <span>3.8%</span>
-                    <span>1,840</span>
-                </div>
-                <div class="barra">
-                    <div class="preenchido" style="width: 3.8%; background-color: #f59e0b;"></div>
-                </div>
-            </div>
-
-
-            <div class="metodo-item">
-                <div class="linha-http">
-                    <span>DELETE</span>
-                    <span>4.3%</span>
-                    <span>2,082</span>
-                </div>
-                <div class="barra">
-                    <div class="preenchido" style="width: 4.3%; background-color: #ff4d4f;"></div>
-                </div>
-            </div>
-
         </div>
-    </div>
     </div>
 </body>
 
 <script>
-    const ctx = document.getElementById('GraficoVolumeRequisicoes');
+    const labelsTempo = [
+        "17:37", "19:22", "21:07", "22:52", "00:37", "02:22",
+        "04:07", "05:52", "07:37", "09:22", "11:07", "12:52", "14:37", "16:37"
+    ];
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['0s', '10s', '20s', '30s', '40s', '50s'],
-            datasets: [{
-                label: 'RPS',
-                data: [450, 500, 300, 480, 400, 520],
-                borderColor: '#00E396',
-                backgroundColor: 'rgba(0, 227, 150, 0.1)',
-                tension: 0.4, 
-                fill: true
-            }]
+    const configBase = {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
+        scales: {
+            x: {
+                ticks: { color: "#9ca3af" },
+                grid: { color: "#1f2937" }
             },
-            scales: {
-                x: {
-                    ticks: { color: '#aaa' },
-                    grid: { color: '#1f2937' }
-                },
-                y: {
-                    ticks: { color: '#aaa' },
-                    grid: { color: '#1f2937' }
-                }
+            y: {
+                ticks: { color: "#9ca3af" },
+                grid: { color: "#1f2937" }
             }
         }
-    });
+    };
 
-
-
-
-
-
-
-    const ctx2 = document.getElementById('GraficoThroughput');
-
-    new Chart(ctx2, {
-        type: 'line',
+    // Volume HTTP
+    new Chart(document.getElementById("graficoVolume"), {
+        type: "line",
         data: {
-            labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-            datasets: [
-                {
-                    label: 'Sucesso',
-                    data: [930, 1080, 980, 620, 520, 820],
-                    borderColor: '#00E396',
-                    backgroundColor: 'rgba(0, 227, 150, 0.18)',
-                    fill: true,
-                    tension: 0.45,
-                    pointRadius: 5,
-                    borderWidth: 2
-                },
-                {
-                    label: 'Erros',
-                    data: [30, 55, 45, 42, 120, 55],
-                    borderColor: '#ff4d4f',
-                    backgroundColor: 'rgba(255, 77, 79, 0.12)',
-                    fill: false,
-                    tension: 0.45,
-                    pointRadius: 5,
-                    borderWidth: 2
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    align: 'end',
-                    labels: {
-                        color: '#fff',
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                        boxWidth: 8,
-                        boxHeight: 8
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#9ca3af'
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    min: 0,
-                    max: 1200,
-                    ticks: {
-                        color: '#9ca3af',
-                        stepSize: 300
-                    },
-                    grid: {
-                        color: '#1f2937',
-                        borderDash: [4, 4]
-                    }
-                }
-            }
-        }
-    });
-
-
-
-
-
-
-
-
-    const ctxLatencia = document.getElementById('graficoLatencia');
-
-    new Chart(ctxLatencia, {
-        type: 'bar',
-        data: {
-            labels: ['< 50ms', '50-100ms', '100-200ms', '200-500ms', '500ms-1s', '> 1s'],
+            labels: labelsTempo,
             datasets: [{
-                label: 'Respostas',
-                data: [4300, 6100, 4000, 1300, 400, 120],
-                backgroundColor: '#13b8c7',
-                borderRadius: 6,
-                borderSkipped: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#9ca3af'
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    min: 0,
-                    max: 8000,
-                    ticks: {
-                        color: '#9ca3af',
-                        stepSize: 2000
-                    },
-                    grid: {
-                        color: '#1f2937',
-                        borderDash: [4, 4]
-                    }
-                }
-            }
-        }
-    });
-
-
-
-
-    const ctxTrade = document.getElementById('graficoTrade');
-
-    new Chart(ctxTrade, {
-        type: 'bar',
-        data: {
-            labels: ['< 5ms', '5-20ms', '20-50ms', '50-100ms', '100-250ms', '> 250ms'],
-            datasets: [{
-                label: 'Ordens',
-                data: [3100, 5900, 2900, 1200, 430, 80],
-                backgroundColor: '#ff7628',
-                borderRadius: 6,
-                borderSkipped: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#cbd5e1'
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    min: 0,
-                    max: 6000,
-                    ticks: {
-                        color: '#cbd5e1',
-                        stepSize: 1500
-                    },
-                    grid: {
-                        color: '#2a2f38',
-                        borderDash: [4, 4]
-                    }
-                }
-            }
-        }
-    });
-
-
-
-
-
-    const ctxOrdens = document.getElementById('graficoOrdensSegundo');
-
-    new Chart(ctxOrdens, {
-        type: 'line',
-        data: {
-            labels: ['0s', '10s', '20s', '30s', '40s', '50s'],
-            datasets: [{
-                label: 'OPS',
-                data: [210, 250, 120, 130, 230, 160],
-                borderColor: '#ff7628',
-                backgroundColor: 'rgba(255, 118, 40, 0.22)',
+                data: [270, 300, 290, 250, 220, 270, 310, 300, 260, 230, 330, 390, 310, 250],
+                borderColor: "#ff7a00",
+                backgroundColor: "rgba(255, 122, 0, 0.18)",
                 fill: true,
-                tension: 0.45,
-                pointRadius: 5,
-                borderWidth: 2
+                tension: 0.4,
+                pointRadius: 0,
+                borderWidth: 3
+            }]
+        },
+        options: configBase
+    });
+
+    // Latência p95
+    new Chart(document.getElementById("graficoLatencia"), {
+        type: "line",
+        data: {
+            labels: labelsTempo,
+            datasets: [{
+                data: [52, 58, 47, 50, 59, 48, 52, 88, 82, 50, 55, 54, 48, 56],
+                borderColor: "#ffc400",
+                backgroundColor: "rgba(255, 196, 0, 0.12)",
+                fill: false,
+                tension: 0.35,
+                pointRadius: 0,
+                borderWidth: 3
+            }]
+        },
+        options: {
+            ...configBase,
+            scales: {
+                ...configBase.scales,
+                y: {
+                    ticks: {
+                        color: "#9ca3af",
+                        callback: value => value + "ms"
+                    },
+                    grid: { color: "#1f2937" }
+                }
+            }
+        }
+    });
+
+    // Status das ordens
+    new Chart(document.getElementById("graficoStatus"), {
+        type: "doughnut",
+        data: {
+            labels: [
+                "Executadas com sucesso",
+                "Rejeitadas regra de negócio",
+                "Falhadas erro técnico"
+            ],
+            datasets: [{
+                data: [92.2, 6.2, 1.6],
+                backgroundColor: ["#35d26f", "#ffc400", "#ff3045"],
+                borderColor: "#0b0d10",
+                borderWidth: 5,
+                cutout: "68%"
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#cbd5e1'
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    min: 0,
-                    max: 280,
-                    ticks: {
-                        color: '#cbd5e1',
-                        stepSize: 70
-                    },
-                    grid: {
-                        color: '#2a2f38',
-                        borderDash: [4, 4]
+                    position: "right",
+                    labels: {
+                        color: "#d1d5db",
+                        usePointStyle: true,
+                        padding: 18
                     }
                 }
             }
         }
+    });
+
+    // Erros 5xx barras
+    new Chart(document.getElementById("graficoErrosBarras"), {
+        type: "bar",
+        data: {
+            labels: ["500","501", "502", "503", "504", "505"],
+            datasets: [{
+                data: [2050, 1020, 1320, 480, 230, 430],
+                backgroundColor: ["#ff3045", "#ffc400", "#ff3045", "#ff7a00"],
+                borderRadius: 8
+            }]
+        },
+        options: configBase
+    });
+
+    // Erros 5xx linha
+    new Chart(document.getElementById("graficoErrosLinha"), {
+        type: "line",
+        data: {
+            labels: labelsTempo,
+            datasets: [{
+                data: [35, 28, 40, 30, 36, 32, 38, 34, 30, 180, 90, 200, 28, 32],
+                borderColor: "#ff3045",
+                fill: false,
+                tension: 0.3,
+                pointRadius: 0,
+                borderWidth: 3
+            }]
+        },
+        options: configBase
     });
 </script>
 
