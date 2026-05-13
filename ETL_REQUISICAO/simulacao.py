@@ -1,6 +1,4 @@
-import csv
 import random
-from datetime import datetime
 
 requisicoes = {
 
@@ -8,26 +6,26 @@ requisicoes = {
         {
             "metodo": "POST",
             "endpoint": "/api/auth/login",
-            "status_code": 200,
-            "latencia_ms": 120
+            "status_code": random.choice([200, 500, 501, 502, 503, 504, 505]),
+            "latencia_ms": random.choice([120, 800, 1200, 2500, 4000])
         },
         {
             "metodo": "POST",
             "endpoint": "/api/auth/logout",
-            "status_code": 200,
-            "latencia_ms": 80
+            "status_code": random.choice([200, 500, 503, 504]),
+            "latencia_ms": random.choice([80, 600, 1800, 3200])
         },
         {
             "metodo": "POST",
             "endpoint": "/api/auth/refresh-token",
-            "status_code": 200,
-            "latencia_ms": 60
+            "status_code": random.choice([200, 500, 502, 504]),
+            "latencia_ms": random.choice([60, 500, 2000, 3500])
         },
         {
             "metodo": "POST",
             "endpoint": "/api/auth/2fa/verify",
-            "status_code": 401,
-            "latencia_ms": 150
+            "status_code": random.choice([200, 401, 500, 503]),
+            "latencia_ms": random.choice([150, 900, 2200])
         }
     ],
 
@@ -35,26 +33,26 @@ requisicoes = {
         {
             "metodo": "GET",
             "endpoint": "/api/quotes/PETR4",
-            "status_code": 200,
-            "latencia_ms": 35
+            "status_code": random.choice([200, 500, 502, 504]),
+            "latencia_ms": random.choice([35, 400, 1400, 3000])
         },
         {
             "metodo": "GET",
             "endpoint": "/api/quotes/VALE3",
-            "status_code": 200,
-            "latencia_ms": 32
+            "status_code": random.choice([200, 500, 503]),
+            "latencia_ms": random.choice([32, 350, 2500])
         },
         {
             "metodo": "GET",
             "endpoint": "/api/market/orderbook/PETR4",
-            "status_code": 504,
-            "latencia_ms": 3200
+            "status_code": random.choice([200, 500, 502, 503, 504, 505]),
+            "latencia_ms": random.choice([90, 1200, 3200, 5000])
         },
         {
             "metodo": "GET",
             "endpoint": "/api/market/news",
-            "status_code": 200,
-            "latencia_ms": 90
+            "status_code": random.choice([200, 500, 503]),
+            "latencia_ms": random.choice([90, 700, 2100])
         }
     ],
 
@@ -62,14 +60,14 @@ requisicoes = {
         {
             "metodo": "GET",
             "endpoint": "/api/portfolio",
-            "status_code": 200,
-            "latencia_ms": 50
+            "status_code": random.choice([200, 500, 503, 504]),
+            "latencia_ms": random.choice([50, 600, 1900, 3400])
         },
         {
             "metodo": "GET",
             "endpoint": "/api/portfolio/performance",
-            "status_code": 200,
-            "latencia_ms": 70
+            "status_code": random.choice([200, 500, 504]),
+            "latencia_ms": random.choice([70, 850, 2800])
         }
     ],
 
@@ -77,14 +75,14 @@ requisicoes = {
         {
             "metodo": "GET",
             "endpoint": "/api/account/balance",
-            "status_code": 200,
-            "latencia_ms": 45
+            "status_code": random.choice([200, 500, 503]),
+            "latencia_ms": random.choice([45, 500, 2300])
         },
         {
             "metodo": "POST",
             "endpoint": "/api/deposits",
-            "status_code": 201,
-            "latencia_ms": 180
+            "status_code": random.choice([201, 500, 502, 504]),
+            "latencia_ms": random.choice([180, 1200, 2600, 4200])
         }
     ],
 
@@ -92,20 +90,20 @@ requisicoes = {
         {
             "metodo": "POST",
             "endpoint": "/api/orders/buy",
-            "status_code": 201,
-            "latencia_ms": 210
+            "status_code": random.choice([201, 500, 502, 503, 504]),
+            "latencia_ms": random.choice([210, 1300, 2800, 4500])
         },
         {
             "metodo": "POST",
             "endpoint": "/api/orders/sell",
-            "status_code": 503,
-            "latencia_ms": 2800
+            "status_code": random.choice([201, 500, 501, 503, 504, 505]),
+            "latencia_ms": random.choice([250, 1600, 3200, 5000])
         },
         {
             "metodo": "DELETE",
             "endpoint": "/api/orders/cancel",
-            "status_code": 200,
-            "latencia_ms": 160
+            "status_code": random.choice([200, 500, 503, 504]),
+            "latencia_ms": random.choice([160, 1000, 2600])
         }
     ],
 
@@ -113,14 +111,14 @@ requisicoes = {
         {
             "metodo": "GET",
             "endpoint": "/api/trades",
-            "status_code": 200,
-            "latencia_ms": 95
+            "status_code": random.choice([200, 500, 503]),
+            "latencia_ms": random.choice([95, 700, 2400])
         },
         {
             "metodo": "GET",
             "endpoint": "/api/trades/summary",
-            "status_code": 200,
-            "latencia_ms": 110
+            "status_code": random.choice([200, 500, 502, 504]),
+            "latencia_ms": random.choice([110, 950, 3100])
         }
     ],
 
@@ -128,14 +126,14 @@ requisicoes = {
         {
             "metodo": "POST",
             "endpoint": "/api/order-preview",
-            "status_code": 200,
-            "latencia_ms": 140
+            "status_code": random.choice([200, 422, 500, 503]),
+            "latencia_ms": random.choice([140, 800, 2200])
         },
         {
             "metodo": "POST",
             "endpoint": "/api/orders/validate",
-            "status_code": 422,
-            "latencia_ms": 170
+            "status_code": random.choice([200, 422, 500, 504]),
+            "latencia_ms": random.choice([170, 1200, 3000])
         }
     ],
 
@@ -143,8 +141,8 @@ requisicoes = {
         {
             "metodo": "POST",
             "endpoint": "/api/risk/check",
-            "status_code": 200,
-            "latencia_ms": 130
+            "status_code": random.choice([200, 500, 503, 504]),
+            "latencia_ms": random.choice([130, 700, 2600, 4100])
         }
     ],
 
@@ -152,36 +150,27 @@ requisicoes = {
         {
             "metodo": "POST",
             "endpoint": "/api/b3/orders",
-            "status_code": 504,
-            "latencia_ms": 4000
+            "status_code": random.choice([200, 500, 501, 502, 503, 504, 505]),
+            "latencia_ms": random.choice([400, 1800, 3500, 6000])
         },
         {
             "metodo": "GET",
             "endpoint": "/api/b3/session-status",
-            "status_code": 200,
-            "latencia_ms": 85
+            "status_code": random.choice([200, 500, 503, 504]),
+            "latencia_ms": random.choice([85, 600, 2400])
         }
     ]
 }
 
 lista_requisicoes_feitas = []
+
 def GerarRequisicao():
+
     for i in range(41):
+
         categoria = random.choice(list(requisicoes.keys()))
         requisicao = random.choice(requisicoes[categoria])
+
         lista_requisicoes_feitas.append(requisicao)
-    return lista_requisicoes_feitas, categoria
 
-resultado, categoria = GerarRequisicao()
-
-ts = datetime.now()
-
-print(ts)
-
-with open('requisicoes.csv', 'w', newline='') as csvfile:
-    Cabecalho = ['timestamp', 'metodo', 'endpoint', 'status_code', 'latencia_ms', 'categoria']
-    writer = csv.writer(csvfile, delimiter=';')
-    writer.writerow(Cabecalho)
-
-    for requisicao in lista_requisicoes_feitas:
-          writer.writerow([ts, requisicao["metodo"], requisicao["endpoint"], requisicao["status_code"], requisicao["latencia_ms"], categoria])
+    return lista_requisicoes_feitas
