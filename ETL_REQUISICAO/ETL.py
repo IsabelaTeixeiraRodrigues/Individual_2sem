@@ -4,195 +4,300 @@ from pathlib import Path
 import simulacao
 import subprocess
 import platform
+from datetime import datetime, timedelta
+import time
+import numpy as np
 
-dados = simulacao.GerarRequisicao()
+while True:
 
-ts = datetime.now()
+    dados = simulacao.GerarRequisicao()
+    ping = simulacao.GerarPing()
 
-arquivo = Path('raw.csv')
+    ts = datetime.now()
 
-if arquivo.is_file():
+    arquivo_raw = Path('raw.csv')
 
-    with open('raw.csv', 'a', newline='') as csvfile:
+    if arquivo_raw.is_file():
 
-        writer = csv.writer(csvfile, delimiter=';')
+        with open('raw.csv', 'a', newline='') as csvfile:
 
-        for requisicao in dados:
+            writer = csv.writer(csvfile, delimiter=';')
 
-            writer.writerow([
-                ts,
-                requisicao["metodo"],
-                requisicao["endpoint"],
-                requisicao["status_code"],
-                requisicao["latencia_ms"]
-            ])
+            for requisicao in dados:
 
-else:
+                writer.writerow([
+                    ts,
+                    requisicao["metodo"],
+                    requisicao["endpoint"],
+                    requisicao["status_code"],
+                    requisicao["latencia_ms"],
+                    ping
+                ])
 
-    with open('raw.csv', 'a', newline='') as csvfile:
+    else:
 
-        Cabecalho = [
-            'timestamp',
-            'metodo',
-            'endpoint',
-            'status_code',
-            'latencia_ms'
-        ]
+        with open('raw.csv', 'a', newline='') as csvfile:
 
-        writer = csv.writer(csvfile, delimiter=';')
-        writer.writerow(Cabecalho)
+            Cabecalho = [
+                'timestamp',
+                'metodo',
+                'endpoint',
+                'status_code',
+                'latencia_ms'
+            ]
 
-        for requisicao in dados:
+            writer = csv.writer(csvfile, delimiter=';')
+            writer.writerow(Cabecalho)
 
-            writer.writerow([
-                ts,
-                requisicao["metodo"],
-                requisicao["endpoint"],
-                requisicao["status_code"],
-                requisicao["latencia_ms"]
-            ])
+            for requisicao in dados:
 
-with open('requisicoes_trusted.csv', 'a', newline='') as csvfile:
+                writer.writerow([
+                    ts,
+                    requisicao["metodo"],
+                    requisicao["endpoint"],
+                    requisicao["status_code"],
+                    requisicao["latencia_ms"]
+                ])
 
-    Cabecalho = [
-        'timestamp',
-        'metodo',
-        'endpoint',
-        'status_code',
-        'latencia_ms',
-        'categoria',
-        'tipo_status',
-        'nivel_latencia'
-    ]
+    arquivo_trusted = Path('requisicoes_trusted.csv')
 
-    writer = csv.writer(csvfile, delimiter=';')
-    writer.writerow(Cabecalho)
+    if arquivo_trusted.is_file():
 
-    with open('raw.csv', newline='') as rawfile:
+        with open('requisicoes_trusted.csv', 'a', newline='') as csvfile:
 
-        reader = csv.reader(rawfile, delimiter=';', quotechar='|')
+            writer = csv.writer(csvfile, delimiter=';')
 
-        next(reader, None)
+            with open('raw.csv', newline='') as rawfile:
 
-        for row in reader:
+                reader = csv.reader(rawfile, delimiter=';', quotechar='|')
 
-            dt = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y %H:%M:%S")
+                next(reader, None)
 
-            metodo = row[1]
-            endpoint = row[2]
+                for row in reader:
 
-            if endpoint.__contains__("account"):
-                categoria = "financeiro"
+                    dt = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S.%f")
+                    dt_formatado = dt.strftime("%d/%m/%Y %H:%M:%S")
 
-            elif endpoint.__contains__("orders"):
-                categoria = "ordens"
+                    metodo = row[1]
+                    endpoint = row[2]
 
-            elif endpoint.__contains__("market"):
-                categoria = "mercado"
+                    if "account" in endpoint:
+                        categoria = "financeiro"
 
-            elif endpoint.__contains__("b3"):
-                categoria = "b3"
+                    elif "orders" in endpoint:
+                        categoria = "ordens"
 
-            else:
-                categoria = "trades"
+                    elif "market" in endpoint:
+                        categoria = "mercado"
 
-            row[3] = int(row[3])
-            row[4] = int(row[4])
+                    elif "b3" in endpoint:
+                        categoria = "b3"
 
-            tipo_status = ''
+                    else:
+                        categoria = "trades"
 
-            if row[3] < 200 or row[3] > 599:
-                tipo_status = 'status code invalido'
+                    status_code = int(row[3])
+                    latencia_ms = int(row[4])
 
-            elif row[3] >= 200 and row[3] <= 299:
-                tipo_status = 'sucesso'
+                    if status_code < 200 or status_code > 599:
+                        tipo_status = 'status code invalido'
 
-            elif row[3] >= 400 and row[3] <= 499:
-                tipo_status = 'erro_cliente'
+                    elif status_code <= 299:
+                        tipo_status = 'sucesso'
 
-            else:
-                tipo_status = 'erro_servidor'
+                    elif status_code <= 499:
+                        tipo_status = 'erro_cliente'
 
-            nivel_latencia = ''
+                    else:
+                        tipo_status = 'erro_servidor'
 
-            if row[4] < 0:
-                nivel_latencia = 'latencia invalida'
+                    if latencia_ms < 0:
+                        nivel_latencia = 'latencia invalida'
 
-            elif row[4] >= 0 and row[4] <= 100:
-                nivel_latencia = 'normal'
+                    elif latencia_ms <= 100:
+                        nivel_latencia = 'normal'
 
-            elif row[4] <= 500:
-                nivel_latencia = 'moderada'
+                    elif latencia_ms <= 500:
+                        nivel_latencia = 'moderada'
 
-            elif row[4] <= 2000:
-                nivel_latencia = 'alta'
+                    elif latencia_ms <= 2000:
+                        nivel_latencia = 'alta'
 
-            else:
-                nivel_latencia = 'critica'
+                    else:
+                        nivel_latencia = 'critica'
 
-            status_code = row[3]
-            latencia_ms = row[4]
+                    writer.writerow([
+                        dt_formatado,
+                        metodo,
+                        endpoint,
+                        status_code,
+                        latencia_ms,
+                        categoria,
+                        tipo_status,
+                        nivel_latencia
+                    ])
 
-            writer.writerow([
-                dt,
-                metodo,
-                endpoint,
-                status_code,
-                latencia_ms,
-                categoria,
-                tipo_status,
-                nivel_latencia
-            ])
+    else:
 
-with open('requisicoes_Client.csv', 'a', newline='') as csvfile_client:
+        with open('requisicoes_trusted.csv', 'a', newline='') as csvfile:
 
-    Cabecalho = [
-        'timestamp',
-        'metodo',
-        'endpoint',
-        'status_code',
-        'latencia_ms',
-        'categoria',
-        'tipo_status',
-        'nivel_latencia'
-    ]
+            Cabecalho = [
+                'timestamp',
+                'metodo',
+                'endpoint',
+                'status_code',
+                'latencia_ms',
+                'categoria',
+                'tipo_status',
+                'nivel_latencia',
+                'porcentagem_Volume',
+                'p95_latencia',
+                'variacao_latencia'
+            ]
 
-    writer = csv.writer(csvfile_client, delimiter=';')
-    writer.writerow(Cabecalho)
+            writer = csv.writer(csvfile, delimiter=';')
+            writer.writerow(Cabecalho)
 
-    with open('requisicoes_trusted.csv', 'r', newline='') as csvfile_trusted:
+    arquivo_client = Path('requisicoes_Client.csv')
 
-        reader = csv.reader(csvfile_trusted, delimiter=';', quotechar='|')
+    if arquivo_client.is_file():
 
-        next(reader, None)
+        with open('requisicoes_Client.csv', 'a', newline='') as csvfile_client:
 
-        contador_requisicao = 0
+            writer = csv.writer(csvfile_client, delimiter=';')
 
-        for row in reader:
+            with open('requisicoes_trusted.csv', 'r', newline='') as csvfile_trusted:
 
-            contador_requisicao += 1
+                reader = csv.reader(csvfile_trusted, delimiter=';', quotechar='|')
 
-            timestamp = row[0]
-            metodo = row[1]
-            endpoint = row[2]
-            status_code = row[3]
-            latencia_ms = row[4]
-            categoria = row[5]
-            tipo_status = row[6]
-            nivel_latencia = row[7]
+                next(reader, None)
 
-            writer.writerow([
-                timestamp,
-                metodo,
-                endpoint,
-                status_code,
-                latencia_ms,
-                categoria,
-                tipo_status,
-                nivel_latencia
-            ])
+                contador_requisicao = 0
 
-            
-        print("Total de requisições:", contador_requisicao)
+                contador_atual = 0
+                contador_anterior = 0
 
+                agora = datetime.now()
 
+                inicio_atual = agora - timedelta(minutes=15)
+                inicio_anterior = agora - timedelta(minutes=30)
+
+                porcentagem = 0
+
+                linhas = []
+
+                latencias = []
+
+                latencias_atuais = []
+                latencias_anteriores = []
+
+                for row in reader:
+
+                    latencia_ms = int(row[4])
+
+                    latencias.append(latencia_ms)
+
+                    if not row or row[0] == "timestamp":
+                        continue
+
+                    contador_requisicao += 1
+
+                    timestamp = datetime.strptime(row[0], "%d/%m/%Y %H:%M:%S")
+
+                    metodo = row[1]
+                    endpoint = row[2]
+                    status_code = row[3]
+                    latencia_ms = int(row[4])
+                    categoria = row[5]
+                    tipo_status = row[6]
+                    nivel_latencia = row[7]
+
+                    if timestamp >= inicio_atual:
+                        contador_atual += 1
+
+                    elif timestamp >= inicio_anterior:
+                        contador_anterior += 1
+
+                    linhas.append([
+                        timestamp,
+                        metodo,
+                        endpoint,
+                        status_code,
+                        latencia_ms,
+                        categoria,
+                        tipo_status,
+                        nivel_latencia
+                    ])
+
+                if contador_anterior > 0:
+
+                    porcentagem = (
+                        (contador_atual - contador_anterior)
+                        / contador_anterior
+                    ) * 100
+
+                    round(porcentagem)
+
+                    print(f"{porcentagem:.2f}%")
+
+                if timestamp >= inicio_atual:
+                    contador_atual += 1
+                    latencias_atuais.append(latencia_ms)
+
+                elif timestamp >= inicio_anterior:
+                    contador_anterior += 1
+                    latencias_anteriores.append(latencia_ms)
+
+                p95_atual = 0
+                p95_anterior = 0
+                variacao_p95 = 0
+
+                if len(latencias_atuais) > 0:
+                    p95_atual = np.percentile(latencias_atuais, 95)
+
+                if len(latencias_anteriores) > 0:
+                    p95_anterior = np.percentile(latencias_anteriores, 95)
+
+                if p95_anterior > 0:
+                    variacao_p95 = ((p95_atual - p95_anterior) / p95_anterior) * 100
+
+                round(variacao_p95, 2)
+
+                for linha in linhas:
+
+                    writer.writerow([
+                        linha[0],
+                        linha[1],
+                        linha[2],
+                        linha[3],
+                        linha[4],
+                        linha[5],
+                        linha[6],
+                        linha[7],
+                        porcentagem,
+                        p95_atual,
+                        variacao_p95
+                    ])
+
+    else:
+
+        with open('requisicoes_Client.csv', 'a', newline='') as csvfile_client:
+
+            Cabecalho = [
+                'timestamp',
+                'metodo',
+                'endpoint',
+                'status_code',
+                'latencia_ms',
+                'categoria',
+                'tipo_status',
+                'nivel_latencia',
+                'porcentagem_Volume',
+                'p95_latencia',
+                'variacao_latencia'
+            ]
+
+            writer = csv.writer(csvfile_client, delimiter=';')
+            writer.writerow(Cabecalho)
+
+    time.sleep(5)

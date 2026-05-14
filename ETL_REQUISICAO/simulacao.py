@@ -1,4 +1,6 @@
 import random
+import subprocess
+import re
 
 requisicoes = {
 
@@ -166,7 +168,7 @@ lista_requisicoes_feitas = []
 
 def GerarRequisicao():
 
-    for i in range(41):
+    for i in range(10):
 
         categoria = random.choice(list(requisicoes.keys()))
         requisicao = random.choice(requisicoes[categoria])
@@ -174,3 +176,38 @@ def GerarRequisicao():
         lista_requisicoes_feitas.append(requisicao)
 
     return lista_requisicoes_feitas
+
+host = "https://www.b3.com.br/pt_br/para-voce"
+
+resultado = subprocess.run(
+    ["ping", "-n", "1", host],
+    capture_output=True,
+    text=True
+)
+
+texto = resultado.stdout
+
+ping = re.search(r"tempo[=<]\s*(\d+)ms", texto)
+
+if ping:
+    print(f"Ping: {ping.group(1)} ms")
+
+def GerarPing(): 
+    host = "www.b3.com.br"
+
+    resultado = subprocess.run(
+    ["ping", "-n", "1", host],
+    capture_output=True,
+    text=True
+    )
+
+    texto = resultado.stdout
+
+    ping = re.search(r"tempo[=<]\s*(\d+)ms", texto)
+
+    if ping:
+        print(f"Ping: {ping.group(1)} ms")
+
+    return ping.group(1)
+
+GerarPing()
